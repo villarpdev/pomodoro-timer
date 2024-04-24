@@ -10,7 +10,7 @@ function Settings (){
     const settingsInfo = useContext(SettingsContext);
 
     return (
-        <div style={{textAlign:'left', width: '20em'}}>
+        <div style={{textAlign:'left'}}>
             <label>Work: {settingsInfo.workMinutes}:00</label>
             <ReactSlider
                 className={'slider'}
@@ -29,7 +29,7 @@ function Settings (){
                 value={settingsInfo.breakMinutes}
                 onChange={newValue => settingsInfo.setBreakMinutes(newValue)}
                 min={1}
-                max={120}
+                max={60}
             />
             <div style={{textAlign:'center', marginTop:'20px'}}>
                 <BackButton 

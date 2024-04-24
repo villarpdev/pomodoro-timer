@@ -3,6 +3,7 @@ import './App.css';
 import Timer from './components/Timer';
 import Settings from './components/Settings';
 import SettingsContext from './components/SettingsContext';
+import toast, { Toaster } from 'react-hot-toast';
 
 import  { useState, useEffect } from 'react';
 
@@ -18,11 +19,16 @@ function App() {
         showSettings,
         workMinutes,
         breakMinutes,
+        toast,
         setShowSettings,
         setWorkMinutes,
         setBreakMinutes,
       }}>
         {showSettings ? <Settings /> : <Timer />}
+        <Toaster
+          position="bottom-center"
+          reverseOrder={false}
+        />
       </SettingsContext.Provider>
     </main>
   );

@@ -3,8 +3,12 @@ import 'react-circular-progressbar/dist/styles.css';
 import PlayButton from './PlayButton';
 import PauseButton from './PauseButton';
 import SettingsButton from './SettingsButton';
+import AlertButton from './AlertButton';
 import { useContext, useEffect, useState, useRef} from 'react';
 import SettingsContext from './SettingsContext';
+
+import restTime from '../sounds/restTime.mp3';
+import workTime from '../sounds/workTime.mp3';
 
 const red = '#f54e4e';
 const green = '#4aec8c';
@@ -36,6 +40,15 @@ function Timer() {
             setMode(nextMode);
             modeRef.current = nextMode;
     
+            if (nextMode === 'break') {
+                play(restTime);
+                settingsInfo.toast.success('Te has ganado un descanso!',{ duration: 4000});
+                
+            }else{
+                play(workTime);
+                settingsInfo.toast.success('Vuelta al trabajo', { duration: 4000 , iconTheme:{ primary: red, }});
+            }
+
             setSecondsLeft(nextSeconds);
             secondsLeftRef.current = nextSeconds;
         }
@@ -54,7 +67,7 @@ function Timer() {
 
             tick();
 
-        },1000);
+        },100);
 
         return () => clearInterval(interval);
     },[settingsInfo]);
@@ -70,6 +83,9 @@ function Timer() {
     let seconds = secondsLeft % 60;
     if (seconds < 10) seconds = '0'+seconds;
 
+    function play (sound) {
+        new Audio(sound).play();
+    }
     return(
         <div>
             <CircularProgressbar 
@@ -86,9 +102,18 @@ function Timer() {
                 : <PauseButton onClick={() => { setIsPaused(true); isPausedRef.current = true; }} />
                 }
             </div>
-            <div style={{marginTop:'20px'}}>
+            <div style={{marginTop:'20px', justifyContent:'space-between', display:'flex'}}>
                 <SettingsButton 
                     onClick={() => settingsInfo.setShowSettings(!settingsInfo.showSettings)}
+                />
+                <AlertButton
+                    style={{
+                        minWidth:'155px',
+                        display:'flex',
+                        alignItems:'center',
+                        justifyContent: 'center'
+                        }} 
+                    onClick={() => settingsInfo.toast.success('Vuelta al trabajo', { duration: 4000 , iconTheme:{ primary: red, }})}
                 />
             </div>
         </div>
